@@ -1,3 +1,4 @@
+import { useAuthentication } from "../../hooks/useAuthentication"
 import styles from "./Register.module.css"
 
 import {useState, useEffect} from 'react'
@@ -10,7 +11,9 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState("")
 
-  const handleSubmit = (e) => {
+  const{createUser, error: authError, loading} = useAuthentication();
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     setError("")
@@ -26,8 +29,18 @@ const Register = () => {
       return
     }
 
+    // Aguarda uma resposta da criação de Usuário
+    const res = await createUser(user)
+    console.log(user)
     
-  }
+  };
+
+  // Observa se o authError será alterado
+  useEffect (() => {
+    if(authError) {
+      setError(authError)
+    }
+  }, [authError])
 
   return (
     <div className={styles.register}>
@@ -39,19 +52,21 @@ const Register = () => {
           <input type="text" name="displayname" required placeholder="Nome do Usuário" value={displayName} onChange={(e) => setDisplayName(e.target.value)}/>
         </label>
         <label>
-          <span>E-mail</span>
+          <span>E-mail:</span>
           <input type="email" name="email" required placeholder="Insira seu E-mail" value={email} onChange={(e) => setEmail(e.target.value)}/>
         </label>
         <label>
-          <span>Senha</span>
+          <span>Senha:</span>
           <input type="password" name="password" required placeholder="Insira sua senha" value={password} onChange={(e) => setPassword(e.target.value)}/>
         </label>
         <label>
           <span>Confirme sua senha:</span>
           <input type="password" name="confirmPassword" required placeholder="Confirme a sua senha" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
         </label>
-        <button className="btn">Cadastrar-se</button>
-        {error && <p className="error">As senhas precisam ser iguais</p>}
+        {!loading && <button className="btn">Cadastrar-se</button>}
+        {loading && <button className="btn" disabled>Aguarde...</button>}
+        {error && <p className="error">{authError}</p>}
+        
       </form>
     </div>
   )
