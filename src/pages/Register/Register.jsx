@@ -63,7 +63,7 @@ const Register = () => {
           <span>Confirme sua senha:</span>
           <input type="password" name="confirmPassword" required placeholder="Confirme a sua senha" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
         </label>
-        {!loading && <button className="btn">Cadastrar-se</button>}
+        {!loading && <button className="btn">Cadastrar</button>}
         {loading && <button className="btn" disabled>Aguarde...</button>}
         {error && <p className="error">{authError}</p>}
         
