@@ -18,6 +18,7 @@ const CreatePost = () => {
   const {insertDocument, response} = useInsertDocument ("posts")
 
   const handleSubmit = (e) => {
+    
     e.preventDefault()
     setFormError("")
 
@@ -66,9 +67,9 @@ const CreatePost = () => {
           <input type="text" name="tags" required placeholder="Insira as tags separadas por vírgula" onChange={(e) => setTags(e.target.value)}
           value={tags}/>
         </label>
-        {!response.loading && <button className="btn">Postar</button>}
-        {response.loading && <button className="btn" disabled>Aguarde...</button>}
-        {response.error && <p className="error">{response.error}</p>}
+        {!response?.loading && <button className="btn">Postar</button>}
+        {response?.loading && <button className="btn" disabled>Aguarde...</button>}
+        {response?.error && <p className="error">{response.error}</p>}
       </form>
     </div>
   )
