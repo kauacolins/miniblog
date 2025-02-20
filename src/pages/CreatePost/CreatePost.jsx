@@ -24,11 +24,26 @@ const CreatePost = () => {
 
     // validate image
 
+    try {
+      new URL(image)
+    } catch (error) {
+      setFormError("A imagem precisa ser uma URL.")
+      return
+    }
+
+    // criar o array de tags
+    const tagsArray = tags.split(",").map((tag) => tag.trim().toLowerCase())
+
+    // checar todos os valores
+    if(!title || !image || !tags || !body) {
+      setFormError("Por favor, preencha todos os campos!")
+    }
+
     console.log({
       title,
       image,
       body,
-      tags,
+      tagsArray,
       uid: user.uid,
       createdBy: user.displayName,
     });
@@ -37,7 +52,7 @@ const CreatePost = () => {
       title,
       image,
       body,
-      tags,
+      tagsArray,
       uid: user.uid,
       createdBy: user.displayName,
     });
@@ -100,9 +115,9 @@ const CreatePost = () => {
             Aguarde.. .
           </button>
         )}
-        {(response.error || formError) && (
-          <p className="error">{response.error || formError}</p>
-        )}
+        {response.error && <p className="error">{response.error}</p>}
+        {formError && <p className="error">{formError}</p>}
+
       </form>
     </div>
   );
