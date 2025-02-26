@@ -7,10 +7,16 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+    useEffect(async() => {
         const collectionRef = collection(db, docCollection);
 
-        let q = query(collectionRef, orderBy("createdAt", "desc"));
+        let q 
+            if(search) {
+              q = await query(collectionRef, where)  
+            } else {
+                q = query(collectionRef, orderBy("createdAt", "desc"));
+            }
+
 
         const unsubscribe = onSnapshot(
             q,
