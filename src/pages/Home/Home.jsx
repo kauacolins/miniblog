@@ -11,7 +11,11 @@ const Home = () => {
   const {documents: posts, loading} = useFetchDocuments("posts")
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
+
+    if(query) {
+      return Navigate(`/search?${query}`)
+    }
   }
 
   return (
